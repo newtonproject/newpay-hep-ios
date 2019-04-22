@@ -2,8 +2,8 @@
 //  NewtonSDK.swift
 //  NewtonSDKDemo
 //
-//  Created by newton on 2019/2/15.
-//  Copyright © 2019年 newton. All rights reserved.
+//  Created by Newton on 2019/2/15.
+//  Copyright 2018-2019 Newton Foundation. All rights reserved.
 //
 
 import Foundation
@@ -47,7 +47,7 @@ open class NewtonSDK: NSObject {
         
         super.init()
         
-        print("Did init")
+        print("Program initialized")
 
     }
     
