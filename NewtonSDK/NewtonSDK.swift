@@ -12,211 +12,233 @@ import UIKit
 open class NewtonSDK: NSObject {
     
     /**
-     Public parameters for NewtonSDK
-     
-     - Parameters:
-     - app_id: (String) App ID, uuid string
-     - message: (String) place order: order json // login: Timestamp + Nonce
-     - sign_r: (String) The r part of signature (dapp_sign_r)
-     - sign_s: (String) The s part of signature (dapp_sign_s)
-     - protocol_version: (Int) The version of protocol, default is 1
-     - bundle_source: (String) Android's package name, iOS's bundle ID
-     - environment: (Int) 1 for release, 2 for testnet, 3 for dev
-     - schemaProtocol: (String) For example newmal-dev
+     *  Public parameters for NewtonSDK
+     *
+     * - dappId: (String) The decentralized application access key
+     * - protocolVersion: (String) The version of protocol, default is 1.0
+     * - protocolName: (String) The protocol name. default is "HEP".
+     * - bundleSource: (String) Android's package name, iOS's bundle ID
+     * - environment: (Int) Diffenrent environment for NewPay. 1 for release, 2 for testnet, 3 for dev
+     * - schemaProtocol: (String) DApp schema
      */
     
-    let appId: String
-    let protocolVersion: Int
+    let dappId: String
+    let protocolVersion: String
+    let protocolName: String
     let bundleSource: String
     let environment: Int
     let schemaProtocol: String
     
     @objc public init(
-        appId: String,
-        protocolVersion: Int,
+        dappId: String,
+        protocolVersion: String = "1.0",
+        protocolName: String = "HEP",
         bundleSource: String,
         environment: Int,
         schemaProtocol: String
         ) {
-        
-        self.appId = appId
+        self.dappId = dappId
         self.protocolVersion = protocolVersion
+        self.protocolName = protocolName
         self.bundleSource = bundleSource
         self.environment = environment
         self.schemaProtocol = schemaProtocol
-        
         super.init()
         
-        print("Program initialized")
-
+        print("SDK did initialized")
     }
     
     
+    
+    
     /**
-     requestProfile: Request Profile for Login
-     
-     - Parameters:
-        - Public parameters
-        - scope: (Int) 1 for basic profile, ...
-        - message: Timestamp + Nonce
+     *  requestProfile: Request Profile for Login
+     *
+     *  - Parameters:
+     *  - Public parameters
+     *  - memo: (String) Login Memo,optional
+     *  - signature: (String) Signature hex string by DApp owner
+     *  - signType: (String) Signature Type, by default is secp256r1
+     *  - scope: (Int) 1 for basic profile without phone number, 2 for profile with more details
+     *  - nonce: (String) Random string or auto-increment sequence
+     *  - ts: (String) Timestamp
+     *  - uuid: (String) uuid
      */
-    @objc open func requestProfile (
+    
+    @objc open func authLogin (
         
-        message: String,
-        sign_r: String,
-        sign_s: String,
+        memo: String,
+        signature: String,
+        signType: String = "secp256r1",
         scope: Int = 1,
+        nonce: String,
+        ts: String,
+        uuid: String,
         completion: @escaping (String) -> Void,
         failure: @escaping (String) -> Void
         )
     {
-        if validateParams(checkList: [self.appId, message, sign_r, sign_s, String(self.protocolVersion), self.bundleSource, String(environment), String(scope)]) {
+        if validateParams(checkList: [self.dappId, memo, signature, String(self.protocolVersion), self.bundleSource, String(environment), String(scope)]) {
             
-            var params = [String: String]()
-            params[Constants.METHOD] = Constants.REQUEST_PROFILE
-            params[Constants.SCHEMA_PROTOCOL] = self.schemaProtocol
-            params[Constants.APPID] = self.appId
-            params[Constants.MESSAGE] = message
-            params[Constants.SIGN_R] = sign_r
-            params[Constants.SIGN_S] = sign_s
-            params[Constants.PROTOCOL_VERSION] = String(self.protocolVersion)
-            params[Constants.BUNDLE_SOURCE] = self.bundleSource
-            params[Constants.ENVIRONMENT] = String(environment)
+            var params = prepareBasicParams()
+            
+            params[Constants.ACTION] = Constants.AUTH_LOGIN
             params[Constants.SCOPE] = String(scope)
+            params[Constants.MEMO] = memo
+            params[Constants.SIGNATURE] = signature
+            params[Constants.SIGN_TYPE] = signType
+            params[Constants.TS] = ts
+            params[Constants.NONCE] = nonce
+            params[Constants.UUID] = uuid
             
             jumpToNewpay(with: params)
             
-            completion("Success")
+            completion("Succeed in passing parameters to NewPay")
         } else {
-            failure("Failed")
+            failure("Fail to pass parameters to NewPay")
         }
         
     }
     
+    
     /**
-     placeOrder: Place order onto NewChain
-     
-     - Parameters:
-        - Public parameters
-        - orderJson: (String) url.encode(orders)
-        - message: order json
-     
-     orders: [order]
-     
-     order:
-     
-     - Parameters:
-     - order_number: (String)
-     - price: (String)
-     - currency: (String)
-     - buyer_newid: (String)
-     - seller_newid: (String)
+     *  placeOrder: Place order proof onto NewChain
+     *
+     *  - Parameters:
+     *  - Public Parameters
+     *
+     *  - signature: (String) Signature hex string by DApp owner
+     *  - signType: (String) Signature Type, by default is secp256r1
+     *  - nonce: (String) Random string or auto-increment sequence
+     *  - ts: (String) timestamp
+     *  - proofHash: (String)The hash of proof which prefix is '0x'
+     *  - uuid: (String) uuid
+     *
      */
+    
     @objc open func placeOrder (
-        message: String,
-        sign_r: String,
-        sign_s: String,
-        orderJson: String,
+        signature: String,
+        signType: String = "secp256r1",
+        proofHash: String,
+        nonce: String,
+        ts: String,
+        uuid: String,
         completion: @escaping (String) -> Void,
         failure: @escaping (String) -> Void
         )
     {
         print("Did get order")
-        if validateParams(checkList: [self.appId, message, sign_r, sign_s, String(self.protocolVersion), self.bundleSource, String(environment), orderJson]) {
+        if validateParams(checkList: [self.dappId, signature, String(self.protocolVersion), self.bundleSource, String(environment), proofHash]) {
             
-            var params = [String: String]()
-            params[Constants.METHOD] = Constants.PLACE_ORDER
-            params[Constants.SCHEMA_PROTOCOL] = self.schemaProtocol
-            params[Constants.APPID] = self.appId
-            params[Constants.MESSAGE] = message
-            params[Constants.SIGN_R] = sign_r
-            params[Constants.SIGN_S] = sign_s
-            params[Constants.PROTOCOL_VERSION] = String(self.protocolVersion)
-            params[Constants.BUNDLE_SOURCE] = self.bundleSource
-            params[Constants.ENVIRONMENT] = String(environment)
-            params[Constants.ORDER_JSON] = orderJson
+            var params = prepareBasicParams()
+            
+            params[Constants.ACTION] = Constants.PROOF_SUBMIT
+            params[Constants.PROOF_HASH] = proofHash
+            params[Constants.SIGNATURE] = signature
+            params[Constants.SIGN_TYPE] = signType
+            params[Constants.TS] = ts
+            params[Constants.NONCE] = nonce
+            params[Constants.UUID] = uuid
             
             jumpToNewpay(with: params)
             
-            
-            completion("Success")
+            completion("Succeed in passing parameters to NewPay")
         } else {
-            failure("Failed")
+            failure("Fail to pass parameters to NewPay")
         }
         
     }
     
-    
-    
     /**
-     pay: Make payment using Newpay
-     
-     - Parameters:
-     - Public parameters
-     - symbol: (String) "NEW", "BTC", etc
-     - address: (String) Target address
-     - amount: (String) pay amount
-     - bundle_source: (String) Android's package name, iOS's bundle ID
-     - summary: (String) Description for the payment
+     *  Make payment using Newpay
+     *
+     *  - Parameters:
+     *  - Public parameters
+     *
+     *  - signature: (String) Signature hex string by DApp owner
+     *  - signType: (String) Signature Type, by default is secp256r1
+     *  - description: (String) The order description
+     *  - priceCurrency: (String) The symbol of fiat or digital token, such as USD, RMB, NEW,BTC,ETH.
+     *  - totalPrice: (String) The amount of fiat or digital token, unit is the minimum unit of given fiat or digital token.
+     *  - orderNumber: (String) The order number
+     *  - seller: (String) The seller's NewID
+     *  - customer: (String) The customer's NewID
+     *  - broker: (String) The broker's NewID.
+     *  - nonce: (String) Random string or auto-increment sequence
+     *  - ts: (String) timestamp
+     *  - uuid: (String) uuid
      */
-    private func pay (
-        message: String,
-        sign_r: String,
-        sign_s: String,
-        symbol: String,
-        address: String,
-        amount: String,
-        summary: String,
+    
+    @objc open func pay (
+        signature: String,
+        signType: String = "secp256r1",
+        description: String,
+        priceCurrency: String,
+        totalPrice: String,
+        orderNumber: String,
+        seller: String,
+        customer: String,
+        broker: String,
+        nonce: String,
+        ts: String,
+        uuid: String,
         completion: @escaping (String) -> Void,
         failure: @escaping (String) -> Void
         )
     {
-        if validateParams(checkList: [self.appId, message, sign_r, sign_s, String(self.protocolVersion), self.bundleSource, String(environment), symbol, address, amount, summary]) {
+        if validateParams(checkList: [self.dappId, signature, signType,  String(self.protocolVersion), self.bundleSource, String(environment), description, priceCurrency, totalPrice, orderNumber, seller, customer, broker]) {
             
-            var params = [String: String]()
-            params[Constants.METHOD] = Constants.PAY
-            params[Constants.SCHEMA_PROTOCOL] = self.schemaProtocol
-            params[Constants.APPID] = self.appId
-            params[Constants.MESSAGE] = message
-            params[Constants.SIGN_R] = sign_r
-            params[Constants.SIGN_S] = sign_s
-            params[Constants.PROTOCOL_VERSION] = String(self.protocolVersion)
-            params[Constants.BUNDLE_SOURCE] = self.bundleSource
-            params[Constants.ENVIRONMENT] = String(environment)
-            params[Constants.SYMBOL] = symbol
-            params[Constants.ADDRESS] = address
-            params[Constants.AMOUNT] = amount
-            params[Constants.SUMMARY] = summary
+            var params = prepareBasicParams()
+            
+            params[Constants.ACTION] = Constants.PAY_ORDER
+            params[Constants.SIGNATURE] = signature
+            params[Constants.SIGN_TYPE] = signType
+            params[Constants.DESCRIPTION] = description
+            params[Constants.PRICE_CURRENCY] = priceCurrency
+            params[Constants.TOTAL_PRICE] = totalPrice
+            params[Constants.ORDER_NUMBER] = orderNumber
+            params[Constants.SELLER] = seller
+            params[Constants.CUSTOMER] = customer
+            params[Constants.BROKER] = broker
+            params[Constants.TS] = ts
+            params[Constants.NONCE] = nonce
+            params[Constants.UUID] = uuid
             
             jumpToNewpay(with: params)
             
-            completion("Success")
+            completion("Succeed in passing parameters to NewPay")
         } else {
-            failure("Failed")
+            failure("Fail to pass parameters to NewPay")
         }
     }
     
     
     
+    
     /**
-     URL Schema
-     
-     [protocol]://[host]?[parameters]
-     
-     - Protocol:
-     - newpay: Release environment
-     - newpay-dev: Dev environment
-     - newpay-test: Test environment
-     
-     - Host:
-     - sdk: Identifier for NewtonSDK
-     
-     - Parameters:
-     - Public parameters
-     - method: (String) Name of function from NewtonSDK that is called by third party app
-     - schema_protocol: Third party app schema
-     - Special parameters: based on functions
+     *  URL Schema
+     *
+     *  [protocol]://[host]?[parameters]
+     *
+     *  - Protocol:
+     *  - newpay: Release environment
+     *  - newpay-dev: Dev environment
+     *  - newpay-test: Test environment
+     *
+     *  - Host:
+     *  - sdk: Identifier for NewtonSDK
+     *
+     *  - Parameters:
+     *  - Public parameters
+     *  - method: (String) Name of function from NewtonSDK that is called by third party app
+     *  - schema_protocol: Third party app schema
+     *  - Special parameters: based on functions
+     *
+     *  - Output:
+     *  - newpay://sdk?schema_protocol=newpay&dappid=112345&protocol_version=1.0
+     *
      */
+    
     private func generateURLSchema (params: [String: String]) -> String {
         let schema_protocol: String = {
             switch Int(params[Constants.ENVIRONMENT]!)  {
@@ -234,9 +256,11 @@ open class NewtonSDK: NSObject {
     
     
     /**
-     formatParams
-     
+     *  Format parameters
+     *  eg. schema_protocol=newpay&dappid=112345&protocol_version=1.0
+     *
      */
+    
     private func formatParams(with params: [String: String]) -> String {
         var str = ""
         for (key, value) in params {
@@ -246,18 +270,34 @@ open class NewtonSDK: NSObject {
     }
     
     
+    /**
+     *  Prepare basic params
+     *
+     */
+    
+    private func prepareBasicParams() -> [String: String] {
+        return [
+            Constants.SCHEMA_PROTOCOL: self.schemaProtocol,
+            Constants.DAPPID: self.dappId,
+            Constants.PROTOCOL_VERSION: String(self.protocolVersion),
+            Constants.PROTOCOL_NAME: self.protocolName,
+            Constants.BUNDLE_SOURCE: self.bundleSource,
+            Constants.ENVIRONMENT: String(environment)
+        ]
+    }
+    
     
     /**
-     validateParams
-     
-     - Parameters:
-     - checkList: List of parameter values
-     
-     - Description:
-     - Check if any parameter value is empty
+     *  Validate Params
+     *
+     *  - Parameters:
+     *  - checkList: List of parameter values
+     *  - Description:
+     *  - Check if any parameter value is empty
      */
+    
     private func validateParams (checkList: [String]) -> Bool {
-        // Check if parameters are empty
+        /// Check if parameters are empty
         for content in checkList {
             if content == "" {
                 return false
@@ -269,21 +309,23 @@ open class NewtonSDK: NSObject {
     
     
     /**
-     jumpToNewpay
-     
-     - Parameters:
-     - params: Parameters to pass to Newpay
-     
-     - Description:
-     - Format url schema with params and jump to Newpay
+     *  jumpToNewpay
+     *
+     *  - Parameters:
+     *  - params: Parameters to pass to Newpay
+     *
+     *  - Description:
+     *  - Format url schema with params and jump to Newpay
      */
-    func jumpToNewpay(with params: [String: String]) {
+    
+    private func jumpToNewpay(with params: [String: String]) {
         print("Did jump")
         let urlString = generateURLSchema(params: params)
         let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: encodedString!)
         UIApplication.shared.openURL(url!)
     }
+
     
 }
 
