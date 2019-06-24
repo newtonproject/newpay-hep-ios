@@ -2,8 +2,8 @@
 //  constant.swift
 //  NewtonSDKDemo
 //
-//  Created by newton on 2019/2/16.
-//  Copyright © 2019年 newton. All rights reserved.
+//  Created by Newton on 2019/2/16.
+//  Copyright 2018-2019 Newton Foundation. All rights reserved.
 //
 
 import Foundation
