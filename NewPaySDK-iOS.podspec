@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
   spec.description   = "NewPay SDK for login, payment and proof submission"
   spec.homepage      = "https://github.com/newtonproject/NewPaySDK-iOS"
   spec.license       = { :type => "GPLv3", :file => "LICENSE" } 
-  spec.author        = { "Yiwei Heng" => "hengyiwei@diynova.com" }
+  spec.author        = { "newtonproject" => "newton-app@newtonproject.org" }
   spec.platform      = :ios, "8.0"
   spec.source        = { :git => "https://github.com/newtonproject/NewPaySDK-iOS.git", :tag => "1.0.0" }
   spec.source_files  = "NewtonSDK", "*.{h,swift}"
