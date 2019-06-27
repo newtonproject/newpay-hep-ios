@@ -1,0 +1,22 @@
+PODS:
+  - NewPaySDK-iOS (1.0.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+
+DEPENDENCIES:
+  - NewPaySDK-iOS
+  - SDWebImage (= 4.4.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - NewPaySDK-iOS
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  NewPaySDK-iOS: cbb2b173bfa644093c821d82e72c6b955d6a8f29
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+
+PODFILE CHECKSUM: abcb0af28e01f0a69422ba3ada9eeae87ec21ef1
+
+COCOAPODS: 1.7.1
