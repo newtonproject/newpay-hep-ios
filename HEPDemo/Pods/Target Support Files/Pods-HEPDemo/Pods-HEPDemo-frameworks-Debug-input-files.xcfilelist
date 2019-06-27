@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-HEPDemo/Pods-HEPDemo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/NewPaySDK-iOS/NewPaySDK_iOS.framework
+${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
