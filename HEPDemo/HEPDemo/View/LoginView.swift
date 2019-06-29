@@ -23,6 +23,7 @@ class LoginView: UIView {
         btn.layer.borderColor = UIColor.black.cgColor
         btn.layer.borderWidth = 1
         btn.backgroundColor = .white
+        btn.isEnabled = false
         return btn
     }()
     

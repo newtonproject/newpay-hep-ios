@@ -44,9 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let str = url.absoluteString.removingPercentEncoding
-//        if let result: URLScheme = QRURLParser.schemeFrom(string: str!) {
-//            coordinator.inCoordinator?.handleScheme(info: result, coordinator: protectionCoordinator)
-//        }
         let notificationName = Notification.Name(rawValue: ViewController.notificationID)
         NotificationCenter.default.post(name: notificationName, object: self,
                                         userInfo: ["url": url.absoluteString])
