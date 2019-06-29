@@ -32,14 +32,20 @@ class ViewController: UIViewController {
         }
     }
     
+    var dappID: String? {
+        didSet {
+            loginView.loginBtn.isEnabled = dappID != nil
+        }
+    }
+    
     let apiNetwork = APINetwork()
     
     lazy var sdk: NewtonSDK = {
         return NewtonSDK(
-            dappId: "a4003fccf6f742c280dc0a2a862e80c1",
-            bundleSource: "org.newtonproject.HEPDemo",
-            environment: 3, /// Diffenrent environment for NewPay. 1 for release, 2 for testnet, 3 for dev
-            schemaProtocol: "hep-demo" /// Used for jump back from NewPay
+            dappId: dappID ?? "",
+            bundleSource: "hep-demo-testnet",
+            environment: 2, /// Diffenrent environment for NewPay. 1 for release, 2 for testnet, 3 for dev
+            schemaProtocol: "hep-demo-testnet" /// Used for jump back from NewPay
         )
     }()
     
@@ -81,6 +87,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setup()
+        getDappID()
         
         let notificationName = Notification.Name(rawValue: ViewController.notificationID)
         NotificationCenter.default.addObserver(self,
@@ -140,6 +147,18 @@ class ViewController: UIViewController {
             submitProofView.heightAnchor.constraint(equalToConstant: 150)
         ])
         
+    }
+    
+    func getDappID() {
+        self.displayLoading()
+        apiNetwork.getAuthLogin(params: ["os": "ios"], completion: { model in
+            self.hideLoading()
+            self.dappID = model.dappID
+            
+        }, failure: {
+            self.hideLoading()
+            self.showAlert(title: "HEPDemo", message: "Failed to get Dapp ID")
+        })
     }
     
     func loginClicked() {

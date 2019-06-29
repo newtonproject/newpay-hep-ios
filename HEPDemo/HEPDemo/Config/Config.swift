@@ -17,18 +17,18 @@ enum RPCServer {
 
 struct Config {
     
-    let currentServer = RPCServer.devnet
+    let currentServer = RPCServer.testnet
     
     var apiBaseURL: URL {
         switch currentServer{
         case .mainnet:
-            return URL(string: "http://47.52.170.176:9999")!
+            return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
         case .testnet:
-            return URL(string: "http://47.52.170.176:9999")!
+            return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
         case .betanet:
-            return URL(string: "http://47.52.170.176:9999")!
+            return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
         case .devnet:
-            return URL(string: "http://47.52.170.176:9999")!
+            return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
         }
     }
     
