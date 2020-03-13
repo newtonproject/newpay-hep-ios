@@ -32,7 +32,7 @@ class LoginView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
         label.font = UIFont.systemFont(ofSize: 30)
-        label.textAlignment = .right
+        label.textAlignment = .left
         return label
     }()
     
@@ -40,7 +40,7 @@ class LoginView: UIView {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 9)
         return label
     }()
@@ -49,7 +49,7 @@ class LoginView: UIView {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 9)
         return label
     }()
@@ -58,7 +58,7 @@ class LoginView: UIView {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 9)
         return label
     }()
@@ -67,7 +67,7 @@ class LoginView: UIView {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 9)
         return label
     }()
@@ -114,9 +114,9 @@ class LoginView: UIView {
             iconImgView.widthAnchor.constraint(equalToConstant: 80),
             iconImgView.heightAnchor.constraint(equalToConstant: 80),
             
-            nameLabel.topAnchor.constraint(equalTo: loginBtn.topAnchor, constant: 18),
-            nameLabel.rightAnchor.constraint(equalTo: iconImgView.leftAnchor, constant: -36),
-            nameLabel.widthAnchor.constraint(equalToConstant: 200),
+            nameLabel.topAnchor.constraint(equalTo: loginBtn.bottomAnchor, constant: 18),
+            nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 18),
+            nameLabel.rightAnchor.constraint(equalTo: iconImgView.leftAnchor, constant: -18),
             nameLabel.heightAnchor.constraint(equalToConstant: 30),
             
             inviteCodeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 18),
@@ -127,17 +127,17 @@ class LoginView: UIView {
             phoneLabel.topAnchor.constraint(equalTo: inviteCodeLabel.bottomAnchor, constant: 0),
             phoneLabel.rightAnchor.constraint(equalTo: iconImgView.leftAnchor, constant: -36),
             phoneLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 18),
-            phoneLabel.heightAnchor.constraint(equalToConstant: 20),
+            phoneLabel.heightAnchor.constraint(equalToConstant: 16),
             
             addressLabel.bottomAnchor.constraint(equalTo: newIDLabel.topAnchor, constant: 0),
             addressLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -18),
             addressLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 18),
-            addressLabel.heightAnchor.constraint(equalToConstant: 20),
+            addressLabel.heightAnchor.constraint(equalToConstant: 16),
             
             newIDLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -18),
             newIDLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -18),
             newIDLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 18),
-            newIDLabel.heightAnchor.constraint(equalToConstant: 20)
+            newIDLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
     

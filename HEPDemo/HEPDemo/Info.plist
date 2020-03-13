@@ -31,7 +31,7 @@ App us</key>
 			<string>org.newtonproject.HEPDemo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>hep-demo-testnet</string>
+				<string>hep-demo-dev</string>
 			</array>
 		</dict>
 	</array>

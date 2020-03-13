@@ -3,7 +3,7 @@
 //  NewtonSDK
 //
 //  Created by Newton on 2019/2/18.
-//  Copyright 2018-2019 Newton Foundation. All rights reserved.
+//  Copyright 2018-2020 Newton Foundation. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

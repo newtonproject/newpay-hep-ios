@@ -17,7 +17,7 @@ enum RPCServer {
 
 struct Config {
     
-    let currentServer = RPCServer.testnet
+    let currentServer = RPCServer.devnet
     
     var apiBaseURL: URL {
         switch currentServer{
@@ -28,8 +28,46 @@ struct Config {
         case .betanet:
             return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
         case .devnet:
-            return URL(string: "https://demo.hep.testnet.newtonproject.org/")!
+            return URL(string: "http://47.240.113.82:9999/")!
         }
     }
     
+    var bundleSource: String {
+        switch currentServer{
+        case .mainnet:
+            return ""
+        case .testnet:
+            return "hep-demo-testnet"
+        case .betanet:
+            return ""
+        case .devnet:
+            return "org.newtonproject.HEPDemo.dev"
+        }
+    }
+    
+    var schemeProtocol: String {
+        switch currentServer{
+        case .mainnet:
+            return ""
+        case .testnet:
+            return "hep-demo-testnet"
+        case .betanet:
+            return ""
+        case .devnet:
+            return "hep-demo-dev"
+        }
+    }
+    
+    var environment: Int {
+        switch currentServer{
+        case .mainnet:
+            return 1
+        case .testnet:
+            return 2
+        case .betanet:
+            return 2
+        case .devnet:
+            return 3
+        }
+    }
 }

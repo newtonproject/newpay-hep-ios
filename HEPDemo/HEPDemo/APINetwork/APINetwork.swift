@@ -12,6 +12,8 @@ enum APIService {
     case getAuthProof(params: [String: String])
     case getAuthLogin(params: [String: String])
     case getAuthPay(params: [String: String])
+    case signMessage(params: [String: String])
+    case signTransaction(params: [String: String])
     
     var baseURL: URL {
         return Config().apiBaseURL
@@ -25,6 +27,10 @@ enum APIService {
             return "get/client/pay/"
         case .getAuthProof:
             return "get/client/proof/"
+        case .signMessage:
+            return "get/client/sign/message/"
+        case .signTransaction:
+            return "get/client/sign/transaction/"
         }
     }
     
@@ -36,6 +42,10 @@ enum APIService {
             return "post"
         case .getAuthProof:
             return "post"
+        case .signMessage:
+            return "post"
+        case .signTransaction:
+            return "post"
         }
     }
     
@@ -46,6 +56,10 @@ enum APIService {
         case .getAuthPay(let params):
             return params
         case .getAuthProof(let params):
+            return params
+        case .signMessage(let params):
+            return params
+        case .signTransaction(let params):
             return params
         }
     }
@@ -136,6 +150,47 @@ class APINetwork {
         })
     }
 
+    func getSignMessage(params: [String: String], completion: @escaping (HEPSignMsgModel) -> Void, failure: @escaping () -> Void) {
+        self.sendRequest(service: .signMessage(params: params), completion: { data, response, error in
+            if let httpResponse = response as? HTTPURLResponse {
+                if let jsonData = data {
+                    do {
+                        let dic = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? NSDictionary
+                        
+                        let model = try JSONDecoder().decode(HEPSignMsgModel.self, from: JSONSerialization.data(withJSONObject: dic?.value(forKey: "result")))
+                        completion(model)
+                    } catch {
+                        failure()
+                    }
+                } else {
+                    failure()
+                }
+            } else {
+                failure()
+            }
+        })
+    }
+    
+    func getSignTransaction(params: [String: String], completion: @escaping (HEPSignTransModel) -> Void, failure: @escaping () -> Void) {
+        self.sendRequest(service: .signTransaction(params: params), completion: { data, response, error in
+            if let httpResponse = response as? HTTPURLResponse {
+                if let jsonData = data {
+                    do {
+                        let dic = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? NSDictionary
+                        
+                        let model = try JSONDecoder().decode(HEPSignTransModel.self, from: JSONSerialization.data(withJSONObject: dic?.value(forKey: "result")))
+                        completion(model)
+                    } catch {
+                        failure()
+                    }
+                } else {
+                    failure()
+                }
+            } else {
+                failure()
+            }
+        })
+    }
 }
 
 

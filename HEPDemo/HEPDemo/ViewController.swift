@@ -34,7 +34,9 @@ class ViewController: UIViewController {
     
     var dappID: String? {
         didSet {
-            loginView.loginBtn.isEnabled = dappID != nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+                self.loginView.loginBtn.isEnabled = self.dappID != nil
+            }
         }
     }
     
@@ -43,12 +45,17 @@ class ViewController: UIViewController {
     lazy var sdk: NewtonSDK = {
         return NewtonSDK(
             dappId: dappID ?? "",
-            bundleSource: "hep-demo-testnet",
-            environment: 2, /// Diffenrent environment for NewPay. 1 for release, 2 for testnet, 3 for dev
-            schemaProtocol: "hep-demo-testnet" /// Used for jump back from NewPay
+            bundleSource: Config().bundleSource,
+            environment: Config().environment,
+            schemaProtocol: Config().schemeProtocol /// Used for jump back from NewPay
         )
     }()
     
+    lazy var scrollView: UIScrollView = {
+        let view = UIScrollView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     lazy var loginView: LoginView = {
         var view = LoginView(frame: .zero)
@@ -58,7 +65,7 @@ class ViewController: UIViewController {
         }
         return view
     }()
-    
+        
     lazy var submitProofView: SubmitProofView = {
         var view = SubmitProofView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +77,7 @@ class ViewController: UIViewController {
         }
         return view
     }()
-    
+        
     lazy var payView: PayView = {
         var view = PayView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -82,19 +89,41 @@ class ViewController: UIViewController {
         }
         return view
     }()
-    
+        
+    lazy var signMsgBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Sign Message", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1
+        btn.addTarget(self, action: #selector(signMessageBtnClicked), for: .touchUpInside)
+        return btn
+    }()
+        
+    lazy var signTransBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Sign Transaction", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1
+        btn.addTarget(self, action: #selector(signTransactionBtnClicked), for: .touchUpInside)
+        return btn
+    }()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setup()
         getDappID()
-        
+            
         let notificationName = Notification.Name(rawValue: ViewController.notificationID)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(captureURL(notification:)),
-                                               name: notificationName, object: nil)
+            selector: #selector(captureURL(notification:)),
+            name: notificationName, object: nil)
     }
-    
+        
     @objc func captureURL(notification: Notification) {
         if let userInfo = notification.userInfo as? [String: String] {
             guard let ursStr: String = userInfo["url"] else {
@@ -124,43 +153,63 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    func setup() {
-        self.view.addSubview(loginView)
-        self.view.addSubview(submitProofView)
-        self.view.addSubview(payView)
         
+    func setup() {
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(loginView)
+        scrollView.addSubview(submitProofView)
+        scrollView.addSubview(payView)
+        scrollView.addSubview(signMsgBtn)
+        scrollView.addSubview(signTransBtn)
+            
         NSLayoutConstraint.activate([
-            loginView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
+            scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            loginView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
             loginView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
             loginView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
             loginView.heightAnchor.constraint(equalToConstant: 200),
-            
+                
             payView.topAnchor.constraint(equalTo: loginView.bottomAnchor, constant: 18),
             payView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
             payView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
             payView.heightAnchor.constraint(equalToConstant: 200),
-            
+                
             submitProofView.topAnchor.constraint(equalTo: payView.bottomAnchor, constant: 18),
             submitProofView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
             submitProofView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
-            submitProofView.heightAnchor.constraint(equalToConstant: 150)
+            submitProofView.heightAnchor.constraint(equalToConstant: 150),
+                
+            signMsgBtn.topAnchor.constraint(equalTo: submitProofView.bottomAnchor, constant: 18),
+            signMsgBtn.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
+            signMsgBtn.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -18),
+            signMsgBtn.heightAnchor.constraint(equalToConstant: 36),
+                
+            signTransBtn.topAnchor.constraint(equalTo: submitProofView.bottomAnchor, constant: 18),
+            signTransBtn.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 18),
+            signTransBtn.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
+            signTransBtn.heightAnchor.constraint(equalToConstant: 36),
+            signTransBtn.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -100)
         ])
-        
+            
     }
-    
+        
     func getDappID() {
         self.displayLoading()
         apiNetwork.getAuthLogin(params: ["os": "ios"], completion: { model in
             self.hideLoading()
             self.dappID = model.dappID
-            
+                
         }, failure: {
             self.hideLoading()
             self.showAlert(title: "HEPDemo", message: "Failed to get Dapp ID")
         })
     }
-    
+        
     func loginClicked() {
 
         loginView.updateView(urlSchema: nil)
@@ -173,10 +222,10 @@ class ViewController: UIViewController {
                 signType: model.signType,
                 scope: 2,
                 nonce: model.nonce,
-                ts: "\(model.ts)",
+                ts: model.ts,
                 uuid: model.uuid,
                 completion: { result in
-                    
+                        
                 },
                 failure: { result in
                     
@@ -186,7 +235,7 @@ class ViewController: UIViewController {
             
         })
     }
-    
+        
     func orderInfoClicked() {
         guard let newID = newID else {
             return
@@ -203,7 +252,7 @@ class ViewController: UIViewController {
             }
         )
     }
-    
+        
     func payClicked() {
         guard let model = hepPayInfoModel else {
             return
@@ -219,23 +268,23 @@ class ViewController: UIViewController {
             customer: model.customer,
             broker: model.broker,
             nonce: model.nonce,
-            ts: "\(model.ts)",
+            ts: model.ts,
             uuid: model.uuid,
             completion: { result in
-                
+                    
         },
             failure: {result in
-                
+                    
         })
-        
+            
     }
-    
+        
     func proofInfoClicked() {
         guard let newID = newID else {
             return
         }
         self.displayLoading()
-        
+            
         apiNetwork.getAuthProof(
             params: ["newid": newID, "os": "ios"],
             completion: { model in
@@ -247,9 +296,9 @@ class ViewController: UIViewController {
             }
         )
     }
-    
-    func submitProofClicked() {
         
+    func submitProofClicked() {
+            
         guard let model = hepProofsModel else {
             return
         }
@@ -259,17 +308,87 @@ class ViewController: UIViewController {
             signType: model.signType,
             proofHash: model.proof_hash,
             nonce: model.nonce,
-            ts: "\(model.ts)",
+            ts: model.ts,
             uuid: model.uuid,
             completion: { result in
-                
+                    
             },
             failure: { result in
-                
+                    
             }
         )
     }
-   
+       
+    @objc func signMessageBtnClicked() {
+            
+        self.displayLoading()
+        apiNetwork.getSignMessage(
+            params: ["os": "ios", "message": "abc123"],//["newid": newID, "os": "ios"],
+            completion: { model in
+                self.hideLoading()
+
+                self.sdk.signMessage(
+                    signature: model.signature,
+                    message: model.message,
+                    nonce: model.nonce,
+                    ts: model.ts,
+                    uuid: model.uuid,
+                    completion: { result in
+                            
+                    },
+                    failure: { result in
+                            
+                    }
+                )
+                    
+            }, failure: {
+                self.hideLoading()
+            }
+        )
+
+    }
+        
+    @objc func signTransactionBtnClicked() {
+
+        self.displayLoading()
+        apiNetwork.getSignTransaction(
+            params: [
+                "os": "ios",
+                "amount": "100",
+                "from": "NEW17xarQL7k3ivufUASxMTCBLxXa9ZN6ndXo2J",
+                "to": "NEW17xarQL7k3ivufUASxMTCBLxXa9ZN6ndXo2J",
+                "transaction_count": "2",
+                "gas_price": "100",
+                "gas_limit": "2100000",
+                "data": "0x0"
+            ],
+            completion: { model in
+                self.hideLoading()
+                                
+                self.sdk.signTransaction(
+                    signature: model.signature,
+                    amount: model.amount,
+                    from: model.from,
+                    to: model.to,
+                    nonce: model.nonce,
+                    gasPrice: model.gasPrice,
+                    gasLimit: model.gasLimit,
+                    data: model.data,
+                    transactionCount: model.transactionCount,
+                    ts: model.ts,
+                    uuid: model.uuid,
+                    completion: { result in
+                                
+                    },
+                    failure: { result in
+                    }
+                )
+            }, failure: {
+                self.hideLoading()
+            }
+        )
+    }
+        
     func updateStatus() {
         if let id = newID {
             submitProofView.isLogged = true
@@ -281,10 +400,9 @@ class ViewController: UIViewController {
 
         submitProofView.gotInfo = hepProofsModel != nil
         payView.gotInfo = hepPayInfoModel != nil
-        
+            
         submitProofView.updateInfoLabel(with: hepProofsModel)
         payView.updateInfoLabel(with: hepPayInfoModel)
     }
-
 }
 

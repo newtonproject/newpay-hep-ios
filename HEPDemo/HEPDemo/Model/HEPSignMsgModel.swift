@@ -1,14 +1,15 @@
 //
-//  HEPAuthInfoModel.swift
+//  HEPSignMsgModel.swift
 //  HEPDemo
 //
-//  Created by Newton Foundation on 2019/6/20.
-//  Copyright © 2019 Newton Foundation. All rights reserved.
+//  Created by Heng Yiwei on 2020/3/9.
+//  Copyright © 2020 Yiwei Heng. All rights reserved.
 //
 
 import Foundation
 
-struct HEPAuthInfoModel: Codable {
+struct HEPSignMsgModel: Codable {
+    
     var dappID: String
     var protocolName: String
     var protocolVersion: String
@@ -17,8 +18,7 @@ struct HEPAuthInfoModel: Codable {
     var signType: String
     var signature: String
     var action: String
-    var scope: Int64
-    var memo: String
+    var message: String
     var uuid: String
     
     enum CodingKeys: String, CodingKey {
@@ -30,8 +30,7 @@ struct HEPAuthInfoModel: Codable {
         case signType = "sign_type"
         case signature = "signature"
         case action = "action"
-        case scope = "scope"
-        case memo = "memo"
+        case message = "message"
         case uuid = "uuid"
     }
 }

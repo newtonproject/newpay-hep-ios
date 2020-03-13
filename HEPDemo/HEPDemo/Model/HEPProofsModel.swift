@@ -13,7 +13,7 @@ struct HEPProofsModel: Codable {
     var dappID: String
     var protocolName: String /// protocol name. The default is "HEP".
     var protocolVersion: String /// protocol version. The example is "1.0".
-    var ts: Int64 /// timestamp
+    var ts: String /// timestamp
     var nonce: String
     var action: String
     var proof_hash: String

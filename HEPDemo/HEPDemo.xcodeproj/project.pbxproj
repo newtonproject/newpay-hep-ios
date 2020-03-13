@@ -27,6 +27,8 @@
 		A296EE0622BB709E00403F57 /* HEPAuthInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A296EE0522BB709E00403F57 /* HEPAuthInfoModel.swift */; };
 		A2BBF12122BC75FF008AEE93 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BBF12022BC75FF008AEE93 /* UIViewController.swift */; };
 		A2BBF12522BC78D1008AEE93 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BBF12422BC78D1008AEE93 /* MBProgressHUD.m */; };
+		C383A3EF241B9E0700F0336F /* HEPSignMsgModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C383A3EE241B9E0700F0336F /* HEPSignMsgModel.swift */; };
+		C383A3F1241B9E1B00F0336F /* HEPSignTransModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C383A3F0241B9E1B00F0336F /* HEPSignTransModel.swift */; };
 		DADCE62CC101FEB0975A366B /* Pods_HEPDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897EC0F43141D547E28EC371 /* Pods_HEPDemoTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +100,8 @@
 		A2BBF12222BC78D1008AEE93 /* HEPDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HEPDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		A2BBF12322BC78D1008AEE93 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		A2BBF12422BC78D1008AEE93 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		C383A3EE241B9E0700F0336F /* HEPSignMsgModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEPSignMsgModel.swift; sourceTree = "<group>"; };
+		C383A3F0241B9E1B00F0336F /* HEPSignTransModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEPSignTransModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +259,8 @@
 				A296EE0522BB709E00403F57 /* HEPAuthInfoModel.swift */,
 				A22F423D22BB855600970A91 /* HEPPayInfoModel.swift */,
 				A22F423F22BB865500970A91 /* HEPProofsModel.swift */,
+				C383A3EE241B9E0700F0336F /* HEPSignMsgModel.swift */,
+				C383A3F0241B9E1B00F0336F /* HEPSignTransModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -496,10 +502,12 @@
 				A296EDBE22BB2C1400403F57 /* APINetwork.swift in Sources */,
 				A296EDAC22B8EB7900403F57 /* PayView.swift in Sources */,
 				A296EDBA22BA7CE100403F57 /* QRURLParser.swift in Sources */,
+				C383A3EF241B9E0700F0336F /* HEPSignMsgModel.swift in Sources */,
 				A296EE0622BB709E00403F57 /* HEPAuthInfoModel.swift in Sources */,
 				A296EE0322BB385400403F57 /* Config.swift in Sources */,
 				A296EDAA22B8EB7000403F57 /* LoginView.swift in Sources */,
 				A2BBF12522BC78D1008AEE93 /* MBProgressHUD.m in Sources */,
+				C383A3F1241B9E1B00F0336F /* HEPSignTransModel.swift in Sources */,
 				A22F423E22BB855600970A91 /* HEPPayInfoModel.swift in Sources */,
 				A22F424022BB865500970A91 /* HEPProofsModel.swift in Sources */,
 				A296ED7622B8E36200403F57 /* AppDelegate.swift in Sources */,

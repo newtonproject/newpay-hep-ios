@@ -35,6 +35,8 @@ extension UIViewController {
             preferredStyle: UIAlertController.Style.alert
         )
         controller.addAction(UIAlertAction(title: NSLocalizedString("OK", value: "OK", comment: ""), style: .default))
-        self.present(controller, animated: true, completion: {})
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+            self.present(controller, animated: true, completion: {})
+        }
     }
 }

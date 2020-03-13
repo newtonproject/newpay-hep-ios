@@ -8,7 +8,7 @@ target 'HEPDemo' do
   # Pods for HEPDemo
 
   pod 'SDWebImage', '4.4.2'
-  pod 'NewPaySDK-iOS'
+  pod 'NewPaySDK-iOS', '1.1.1'
 
   target 'HEPDemoTests' do
     inherit! :search_paths
