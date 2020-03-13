@@ -3,7 +3,7 @@
 //  NewtonSDKDemo
 //
 //  Created by Newton on 2019/2/16.
-//  Copyright 2018-2019 Newton Foundation. All rights reserved.
+//  Copyright 2018-2020 Newton Foundation. All rights reserved.
 //
 
 import Foundation
@@ -39,6 +39,18 @@ struct Constants {
     static let AUTH_LOGIN = "hep.auth.login"
     static let PAY_ORDER = "hep.pay.order"
     static let PROOF_SUBMIT = "hep.proof.submit"
+    /// Sign Message
+    static let SIGN_MESSAGE = "hep.sign.message"
+    static let MESSAGE = "message"
+    /// Sign Transaction
+    static let SIGN_TRANSACTION = "hep.sign.transaction"
+    static let AMOUNT = "amount"
+    static let FROM = "from"
+    static let TO = "to"
+    static let TRANSACTION_COUNT = "transaction_count"
+    static let GAS_PRICE = "gas_price"
+    static let GAS_LIMIT = "gas_limit"
+    static let DATA = "data"
 }
 
 

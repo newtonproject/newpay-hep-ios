@@ -3,13 +3,14 @@
 //  NewtonSDKDemo
 //
 //  Created by Newton on 2019/2/15.
-//  Copyright 2018-2019 Newton Foundation. All rights reserved.
+//  Copyright 2018-2020 Newton Foundation. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 open class NewtonSDK: NSObject {
+    
     
     /**
      *  Public parameters for NewtonSDK
@@ -47,8 +48,6 @@ open class NewtonSDK: NSObject {
         
         print("SDK did initialized")
     }
-    
-    
     
     
     /**
@@ -149,6 +148,7 @@ open class NewtonSDK: NSObject {
         
     }
     
+    
     /**
      *  Make payment using Newpay
      *
@@ -213,6 +213,114 @@ open class NewtonSDK: NSObject {
     }
     
     
+    /**
+     * Sign message using Newpay
+     *
+     *  - Parameters:
+     *  - Public parameters
+     *
+     *  - signature: (String) Signature hex string by DApp owner
+     *  - signType: (String) Signature Type, by default is secp256r1
+     *  - message: (String) The message that needed to be signed
+     *  - nonce: (String) Random string or auto-increment sequence
+     *  - ts: (String) timestamp
+     *  - uuid: (String) uuid
+     */
+    
+    @objc open func signMessage (
+        signature: String,
+        signType: String = "secp256r1",
+        message: String,
+        nonce: String,
+        ts: String,
+        uuid: String,
+        completion: @escaping (String) -> Void,
+        failure: @escaping (String) -> Void
+        )
+    {
+        if validateParams(checkList: [self.dappId, signature, signType,  String(self.protocolVersion), self.bundleSource, String(environment), message]) {
+            
+            var params = prepareBasicParams()
+            
+            params[Constants.ACTION] = Constants.SIGN_MESSAGE
+            params[Constants.SIGNATURE] = signature
+            params[Constants.SIGN_TYPE] = signType
+            params[Constants.MESSAGE] = message
+            params[Constants.TS] = ts
+            params[Constants.NONCE] = nonce
+            params[Constants.UUID] = uuid
+            
+            jumpToNewpay(with: params)
+            
+            completion("Succeed in passing parameters to NewPay")
+        } else {
+            failure("Fail to pass parameters to NewPay")
+        }
+    }
+    
+    
+    /**
+     * Sign transaction using Newpay
+     *
+     *  - Parameters:
+     *  - Public parameters
+     *
+     *  - signature: (String) Signature hex string by DApp owner
+     *  - signType: (String) Signature Type, by default is secp256r1
+     *  - amount: (String) Amount in Transaction
+     *  - from: (String) From address in Transaction, should be the same with the wallet address
+     *  - to: (String) To address in Transaction
+     *  - gasPrice: (String) Gas price in Transaction
+     *  - gasLimit: (String) Gas limit in Transaction
+     *  - data: (String) Data in Transaction
+     *  - transactionCount: (String) Nonce in Transaction
+     *  - nonce: (String) Random string or auto-increment sequence
+     *  - ts: (String) Timestamp
+     *  - uuid: (String) uuid
+     */
+    
+    @objc open func signTransaction (
+        signature: String,
+        signType: String = "secp256r1",
+        amount: String,
+        from: String,
+        to: String,
+        nonce: String,
+        gasPrice: String,
+        gasLimit: String,
+        data: String,
+        transactionCount: String,
+        ts: String,
+        uuid: String,
+        completion: @escaping (String) -> Void,
+        failure: @escaping (String) -> Void
+        )
+    {
+        if validateParams(checkList: [self.dappId, signature, signType,  String(self.protocolVersion), self.bundleSource, String(environment), amount, from, to, transactionCount, gasPrice, gasLimit, data]) {
+            
+            var params = prepareBasicParams()
+            
+            params[Constants.ACTION] = Constants.SIGN_TRANSACTION
+            params[Constants.SIGNATURE] = signature
+            params[Constants.SIGN_TYPE] = signType
+            params[Constants.TS] = ts
+            params[Constants.NONCE] = nonce
+            params[Constants.UUID] = uuid
+            params[Constants.AMOUNT] = amount
+            params[Constants.FROM] = from
+            params[Constants.TO] = to
+            params[Constants.TRANSACTION_COUNT] = transactionCount
+            params[Constants.GAS_PRICE] = gasPrice
+            params[Constants.GAS_LIMIT] = gasLimit
+            params[Constants.DATA] = data
+            
+            jumpToNewpay(with: params)
+            
+            completion("Succeed in passing parameters to NewPay")
+        } else {
+            failure("Fail to pass parameters to NewPay")
+        }
+    }
     
     
     /**
@@ -307,7 +415,6 @@ open class NewtonSDK: NSObject {
     }
     
     
-    
     /**
      *  jumpToNewpay
      *
@@ -325,8 +432,6 @@ open class NewtonSDK: NSObject {
         let url = URL(string: encodedString!)
         UIApplication.shared.openURL(url!)
     }
-
-    
 }
 
 
