@@ -31,5 +31,85 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "369F04D4-12EF-4FB0-BB8A-B481B0D65A7E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HEPDemo/APINetwork/APINetwork.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "getSignMessage(params:completion:failure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "99C04630-289B-487E-929D-BB34EBB702AC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HEPDemo/APINetwork/APINetwork.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "getSignMessage(params:completion:failure:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "99C04630-289B-487E-929D-BB34EBB702AC - 4bc96f6cee0f2c0d"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HEPDemo.APINetwork.getSignMessage(params: Swift.Dictionary&lt;Swift.String, Swift.String&gt;, completion: (HEPDemo.HEPSignMsgModel) -&gt; (), failure: () -&gt; ()) -&gt; ()"
+                  moduleName = "HEPDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yiwei/Documents/github/NewtonProject/NewPaySDK-iOS/HEPDemo/HEPDemo/APINetwork/APINetwork.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "154"
+                  endingLineNumber = "154"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "99C04630-289B-487E-929D-BB34EBB702AC - ec99de6e42fd758a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in HEPDemo.APINetwork.getSignMessage(params: Swift.Dictionary&lt;Swift.String, Swift.String&gt;, completion: (HEPDemo.HEPSignMsgModel) -&gt; (), failure: () -&gt; ()) -&gt; ()"
+                  moduleName = "HEPDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yiwei/Documents/github/NewtonProject/NewPaySDK-iOS/HEPDemo/HEPDemo/APINetwork/APINetwork.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "173">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8451060-69DF-4210-A95F-2AF669D78B48"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/NewPaySDK-iOS/NewtonSDK/NewtonSDK.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "signMessage(signature:signType:message:nonce:ts:uuid:completion:failure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

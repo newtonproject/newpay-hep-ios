@@ -54,6 +54,7 @@ class ViewController: UIViewController {
     lazy var scrollView: UIScrollView = {
         let view = UIScrollView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = false
         return view
     }()
     
@@ -89,27 +90,25 @@ class ViewController: UIViewController {
         }
         return view
     }()
-        
-    lazy var signMsgBtn: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign Message", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.layer.borderColor = UIColor.black.cgColor
-        btn.layer.borderWidth = 1
-        btn.addTarget(self, action: #selector(signMessageBtnClicked), for: .touchUpInside)
-        return btn
+    
+    lazy var msgView: SignMsgView = {
+        let v = SignMsgView(frame: .zero)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .white
+        v.btnAction = {
+            self.signMessageBtnClicked()
+        }
+        return v
     }()
-        
-    lazy var signTransBtn: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign Transaction", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.layer.borderColor = UIColor.black.cgColor
-        btn.layer.borderWidth = 1
-        btn.addTarget(self, action: #selector(signTransactionBtnClicked), for: .touchUpInside)
-        return btn
+    
+    lazy var transactionView: SignTransactionView = {
+        let v = SignTransactionView(frame: .zero)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .white
+        v.btnAction = {
+            self.signTransactionBtnClicked()
+        }
+        return v
     }()
         
     override func viewDidLoad() {
@@ -117,6 +116,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         setup()
         getDappID()
+        view.tapToHideKeyboard()
             
         let notificationName = Notification.Name(rawValue: ViewController.notificationID)
         NotificationCenter.default.addObserver(self,
@@ -150,6 +150,20 @@ class ViewController: UIViewController {
                 } else {
                     self.showAlert(title: "Proof Submit Failed", message: "")
                 }
+            } else if urlScheme.module == "hep.sign.message" {
+                if let errorcode = urlScheme.param["errorCode"], errorcode == "1" {
+                    self.showAlert(title: "Sign Message Success", message: "")
+                    self.msgView.result = urlScheme.param["signature"] ?? ""
+                } else {
+                    self.showAlert(title: "Proof Submit Failed", message: "")
+                }
+            }  else if urlScheme.module == "hep.sign.transaction" {
+                if let errorcode = urlScheme.param["errorCode"], errorcode == "1" {
+                    self.showAlert(title: "Sign Transaction Success", message: "")
+                    self.transactionView.result = urlScheme.param["signed_transaction"] ?? ""
+                } else {
+                    self.showAlert(title: "Sign Transaction Failed", message: "")
+                }
             }
         }
     }
@@ -159,9 +173,9 @@ class ViewController: UIViewController {
         scrollView.addSubview(loginView)
         scrollView.addSubview(submitProofView)
         scrollView.addSubview(payView)
-        scrollView.addSubview(signMsgBtn)
-        scrollView.addSubview(signTransBtn)
-            
+        scrollView.addSubview(msgView)
+        scrollView.addSubview(transactionView)
+        
         NSLayoutConstraint.activate([
             
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -169,7 +183,7 @@ class ViewController: UIViewController {
             scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            loginView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
+            loginView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 60),
             loginView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
             loginView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
             loginView.heightAnchor.constraint(equalToConstant: 200),
@@ -183,17 +197,17 @@ class ViewController: UIViewController {
             submitProofView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
             submitProofView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
             submitProofView.heightAnchor.constraint(equalToConstant: 150),
-                
-            signMsgBtn.topAnchor.constraint(equalTo: submitProofView.bottomAnchor, constant: 18),
-            signMsgBtn.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
-            signMsgBtn.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -18),
-            signMsgBtn.heightAnchor.constraint(equalToConstant: 36),
-                
-            signTransBtn.topAnchor.constraint(equalTo: submitProofView.bottomAnchor, constant: 18),
-            signTransBtn.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 18),
-            signTransBtn.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
-            signTransBtn.heightAnchor.constraint(equalToConstant: 36),
-            signTransBtn.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -100)
+            
+            msgView.topAnchor.constraint(equalTo: submitProofView.bottomAnchor, constant: 18),
+            msgView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
+            msgView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
+            msgView.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
+            
+            transactionView.topAnchor.constraint(equalTo: msgView.bottomAnchor, constant: 18),
+            transactionView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 18),
+            transactionView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -18),
+            transactionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
+            transactionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -300),
         ])
             
     }
@@ -320,73 +334,82 @@ class ViewController: UIViewController {
     }
        
     @objc func signMessageBtnClicked() {
-            
-        self.displayLoading()
-        apiNetwork.getSignMessage(
-            params: ["os": "ios", "message": "abc123"],//["newid": newID, "os": "ios"],
-            completion: { model in
-                self.hideLoading()
-
-                self.sdk.signMessage(
-                    signature: model.signature,
-                    message: model.message,
-                    nonce: model.nonce,
-                    ts: model.ts,
-                    uuid: model.uuid,
-                    completion: { result in
+        if msgView.shouldSend {
+        
+            self.displayLoading()
+            apiNetwork.getSignMessage(
+                params: [
+                    "os": "ios",
+                    "message": msgView.message
+                ],
+                completion: { model in
+                    self.hideLoading()
+                    self.sdk.signMessage(
+                        signature: model.signature,
+                        message: model.message,
+                        nonce: model.nonce,
+                        ts: model.ts,
+                        uuid: model.uuid,
+                        completion: { result in
                             
-                    },
-                    failure: { result in
+                        },
+                        failure: { result in
                             
-                    }
-                )
+                        }
+                    )
                     
-            }, failure: {
-                self.hideLoading()
-            }
-        )
+                }, failure: {
+                    self.hideLoading()
+                }
+            )
+        } else {
+            self.showAlert(title: "HEP", message: "Input Missing")
+        }
 
     }
         
     @objc func signTransactionBtnClicked() {
-
-        self.displayLoading()
-        apiNetwork.getSignTransaction(
-            params: [
-                "os": "ios",
-                "amount": "100",
-                "from": "NEW17xarQL7k3ivufUASxMTCBLxXa9ZN6ndXo2J",
-                "to": "NEW17xarQL7k3ivufUASxMTCBLxXa9ZN6ndXo2J",
-                "transaction_count": "2",
-                "gas_price": "100",
-                "gas_limit": "2100000",
-                "data": "0x0"
-            ],
-            completion: { model in
-                self.hideLoading()
+        if transactionView.shouldSend {
+            self.displayLoading()
+            apiNetwork.getSignTransaction(
+                params: [
+                    "os": "ios",
+                    "amount": transactionView.amount,
+                    "from": transactionView.from,
+                    "to": transactionView.to,
+                    "transaction_count": transactionView.transactionCount,
+                    "gas_price": transactionView.gasPrice,
+                    "gas_limit": transactionView.gasLimit,
+                    "data": transactionView.data
+                ],
+                completion: { model in
+                    self.hideLoading()
                                 
-                self.sdk.signTransaction(
-                    signature: model.signature,
-                    amount: model.amount,
-                    from: model.from,
-                    to: model.to,
-                    nonce: model.nonce,
-                    gasPrice: model.gasPrice,
-                    gasLimit: model.gasLimit,
-                    data: model.data,
-                    transactionCount: model.transactionCount,
-                    ts: model.ts,
-                    uuid: model.uuid,
-                    completion: { result in
+                    self.sdk.signTransaction(
+                        signature: model.signature,
+                        amount: model.amount,
+                        from: model.from,
+                        to: model.to,
+                        nonce: model.nonce,
+                        gasPrice: model.gasPrice,
+                        gasLimit: model.gasLimit,
+                        data: model.data,
+                        transactionCount: model.transactionCount,
+                        ts: model.ts,
+                        uuid: model.uuid,
+                        completion: { result in
                                 
-                    },
-                    failure: { result in
-                    }
-                )
-            }, failure: {
-                self.hideLoading()
-            }
-        )
+                        },
+                        failure: { result in
+                        }
+                    )
+                }, failure: {
+                    self.hideLoading()
+                }
+            )
+        } else {
+            self.showAlert(title: "HEP", message: "Input Missing")
+        }
     }
         
     func updateStatus() {

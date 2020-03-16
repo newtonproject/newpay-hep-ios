@@ -29,6 +29,10 @@
 		A2BBF12522BC78D1008AEE93 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BBF12422BC78D1008AEE93 /* MBProgressHUD.m */; };
 		C383A3EF241B9E0700F0336F /* HEPSignMsgModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C383A3EE241B9E0700F0336F /* HEPSignMsgModel.swift */; };
 		C383A3F1241B9E1B00F0336F /* HEPSignTransModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C383A3F0241B9E1B00F0336F /* HEPSignTransModel.swift */; };
+		C3A701A1241F24E7002187CA /* SignMsgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A701A0241F24E7002187CA /* SignMsgView.swift */; };
+		C3A701A3241F24F2002187CA /* SignTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A701A2241F24F2002187CA /* SignTransactionView.swift */; };
+		C3A701A6241F25A1002187CA /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A701A5241F25A1002187CA /* InputTextView.swift */; };
+		C3A701A8241F2ACF002187CA /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A701A7241F2ACF002187CA /* UIView.swift */; };
 		DADCE62CC101FEB0975A366B /* Pods_HEPDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 897EC0F43141D547E28EC371 /* Pods_HEPDemoTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +106,10 @@
 		A2BBF12422BC78D1008AEE93 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		C383A3EE241B9E0700F0336F /* HEPSignMsgModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEPSignMsgModel.swift; sourceTree = "<group>"; };
 		C383A3F0241B9E1B00F0336F /* HEPSignTransModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEPSignTransModel.swift; sourceTree = "<group>"; };
+		C3A701A0241F24E7002187CA /* SignMsgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMsgView.swift; sourceTree = "<group>"; };
+		C3A701A2241F24F2002187CA /* SignTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignTransactionView.swift; sourceTree = "<group>"; };
+		C3A701A5241F25A1002187CA /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
+		C3A701A7241F2ACF002187CA /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,9 +227,12 @@
 		A296EDA822B8EB2D00403F57 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C3A701A4241F2593002187CA /* Component */,
 				A296EDA922B8EB7000403F57 /* LoginView.swift */,
 				A296EDAB22B8EB7900403F57 /* PayView.swift */,
 				A296EDAD22B8EB8400403F57 /* SubmitProofView.swift */,
+				C3A701A0241F24E7002187CA /* SignMsgView.swift */,
+				C3A701A2241F24F2002187CA /* SignTransactionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -269,8 +280,17 @@
 			isa = PBXGroup;
 			children = (
 				A2BBF12022BC75FF008AEE93 /* UIViewController.swift */,
+				C3A701A7241F2ACF002187CA /* UIView.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		C3A701A4241F2593002187CA /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				C3A701A5241F25A1002187CA /* InputTextView.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -502,15 +522,19 @@
 				A296EDBE22BB2C1400403F57 /* APINetwork.swift in Sources */,
 				A296EDAC22B8EB7900403F57 /* PayView.swift in Sources */,
 				A296EDBA22BA7CE100403F57 /* QRURLParser.swift in Sources */,
+				C3A701A6241F25A1002187CA /* InputTextView.swift in Sources */,
 				C383A3EF241B9E0700F0336F /* HEPSignMsgModel.swift in Sources */,
 				A296EE0622BB709E00403F57 /* HEPAuthInfoModel.swift in Sources */,
 				A296EE0322BB385400403F57 /* Config.swift in Sources */,
 				A296EDAA22B8EB7000403F57 /* LoginView.swift in Sources */,
 				A2BBF12522BC78D1008AEE93 /* MBProgressHUD.m in Sources */,
 				C383A3F1241B9E1B00F0336F /* HEPSignTransModel.swift in Sources */,
+				C3A701A8241F2ACF002187CA /* UIView.swift in Sources */,
+				C3A701A3241F24F2002187CA /* SignTransactionView.swift in Sources */,
 				A22F423E22BB855600970A91 /* HEPPayInfoModel.swift in Sources */,
 				A22F424022BB865500970A91 /* HEPProofsModel.swift in Sources */,
 				A296ED7622B8E36200403F57 /* AppDelegate.swift in Sources */,
+				C3A701A1241F24E7002187CA /* SignMsgView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,6 +713,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = 5H72V76N3U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -717,6 +742,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = 5H72V76N3U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
