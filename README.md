@@ -8,7 +8,7 @@ iOS SDK for NewPay Integration
 
 CocoaPods is the recommended way to add NewPaySDK to your project.
 
-1. Add a pod entry for NewPaySDK to your Podfile: pod 'NewPaySDK-iOS'
+1. Add a pod entry for NewPaySDK to your Podfile: pod 'NewPaySDK-iOS'. The newest version is 1.1.1 .
 2. Install the pod(s) by running pod install.
 3. Include NewPaySDK wherever you need it with:
     - (Swift) import NewPaySDK_iOS 
@@ -65,6 +65,26 @@ CocoaPods is the recommended way to add NewPaySDK to your project.
  placeOrderWithSignature:<#(NSString * _Nonnull)#> signType:<#(NSString * _Nonnull)#> proofHash:<#(NSString * _Nonnull)#> nonce:<#(NSString * _Nonnull)#> ts:<#(NSString * _Nonnull)#> uuid:<#(NSString * _Nonnull)#> completion:<#^(NSString * _Nonnull)completion#> failure:<#^(NSString * _Nonnull)failure#>
  ```
  
+ #### Sign Message
+ 
+ ```
+  /// Swift
+  signMessage(signature: <#T##String#>, signType: <#T##String#>, message: <#T##String#>, nonce: <#T##String#>, ts: <#T##String#>, uuid: <#T##String#>, completion: <#T##(String) -> Void#>, failure: <#T##(String) -> Void#>)
+  
+  /// Objective-C
+  signMessageWithSignature:<#(NSString * _Nonnull)#> signType:<#(NSString * _Nonnull)#> message:<#(NSString * _Nonnull)#> nonce:<#(NSString * _Nonnull)#> ts:<#(NSString * _Nonnull)#> uuid:<#(NSString * _Nonnull)#> completion:<#^(NSString * _Nonnull)completion#> failure:<#^(NSString * _Nonnull)failure#>
+ ```
+ 
+ #### Sign Transaction
+ 
+ ```
+ /// Swift
+ signTransaction(signature: <#T##String#>, signType: <#T##String#>, amount: <#T##String#>, from: <#T##String#>, to: <#T##String#>, nonce: <#T##String#>, gasPrice: <#T##String#>, gasLimit: <#T##String#>, data: <#T##String#>, transactionCount: <#T##String#>, ts: <#T##String#>, uuid: <#T##String#>, completion: <#T##(String) -> Void#>, failure: <#T##(String) -> Void#>)
+ 
+ /// Objective-C
+ signTransactionWithSignature:<#(NSString * _Nonnull)#> signType:<#(NSString * _Nonnull)#> amount:<#(NSString * _Nonnull)#> from:<#(NSString * _Nonnull)#> to:<#(NSString * _Nonnull)#> nonce:<#(NSString * _Nonnull)#> gasPrice:<#(NSString * _Nonnull)#> gasLimit:<#(NSString * _Nonnull)#> data:<#(NSString * _Nonnull)#> transactionCount:<#(NSString * _Nonnull)#> ts:<#(NSString * _Nonnull)#> uuid:<#(NSString * _Nonnull)#> completion:<#^(NSString * _Nonnull)completion#> failure:<#^(NSString * _Nonnull)failure#>
+ 
+ ```
  
  ## License
  
