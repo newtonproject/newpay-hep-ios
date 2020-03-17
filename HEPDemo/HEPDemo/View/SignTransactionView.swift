@@ -76,6 +76,8 @@ class SignTransactionView: UIView {
     lazy var inputFromView: InputTextView = {
         let v = InputTextView(frame: .zero, title: "From Address")
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.inputTextField.isUserInteractionEnabled = false
+        v.inputTextField.placeholder = "Login to get from address"
         return v
     }()
     

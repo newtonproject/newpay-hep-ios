@@ -32,6 +32,12 @@ class ViewController: UIViewController {
         }
     }
     
+    var address: String? {
+        didSet {
+            transactionView.inputFromView.inputTextField.text = address
+        }
+    }
+    
     var dappID: String? {
         didSet {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
@@ -132,6 +138,7 @@ class ViewController: UIViewController {
             let urlScheme = QRURLParser.schemeFrom(string: ursStr)
             if urlScheme.module == "hep.auth.login" {
                 newID = urlScheme.param["newid"]
+                address = urlScheme.param["address"]
                 loginView.updateView(urlSchema: urlScheme)
                 if let errorcode = urlScheme.param["errorCode"], errorcode == "1" {
                     self.showAlert(title: "Login Success", message: "")
@@ -369,46 +376,51 @@ class ViewController: UIViewController {
     }
         
     @objc func signTransactionBtnClicked() {
-        if transactionView.shouldSend {
-            self.displayLoading()
-            apiNetwork.getSignTransaction(
-                params: [
-                    "os": "ios",
-                    "amount": transactionView.amount,
-                    "from": transactionView.from,
-                    "to": transactionView.to,
-                    "transaction_count": transactionView.transactionCount,
-                    "gas_price": transactionView.gasPrice,
-                    "gas_limit": transactionView.gasLimit,
-                    "data": transactionView.data
-                ],
-                completion: { model in
-                    self.hideLoading()
+        if let walletAddress = address {
+            
+            if transactionView.shouldSend {
+                self.displayLoading()
+                apiNetwork.getSignTransaction(
+                    params: [
+                        "os": "ios",
+                        "amount": transactionView.amount,
+                        "from": walletAddress,
+                        "to": transactionView.to,
+                        "transaction_count": transactionView.transactionCount,
+                        "gas_price": transactionView.gasPrice,
+                        "gas_limit": transactionView.gasLimit,
+                        "data": transactionView.data
+                    ],
+                    completion: { model in
+                        self.hideLoading()
                                 
-                    self.sdk.signTransaction(
-                        signature: model.signature,
-                        amount: model.amount,
-                        from: model.from,
-                        to: model.to,
-                        nonce: model.nonce,
-                        gasPrice: model.gasPrice,
-                        gasLimit: model.gasLimit,
-                        data: model.data,
-                        transactionCount: model.transactionCount,
-                        ts: model.ts,
-                        uuid: model.uuid,
-                        completion: { result in
+                        self.sdk.signTransaction(
+                            signature: model.signature,
+                            amount: model.amount,
+                            from: model.from,
+                            to: model.to,
+                            nonce: model.nonce,
+                            gasPrice: model.gasPrice,
+                            gasLimit: model.gasLimit,
+                            data: model.data,
+                            transactionCount: model.transactionCount,
+                            ts: model.ts,
+                            uuid: model.uuid,
+                            completion: { result in
                                 
-                        },
-                        failure: { result in
-                        }
-                    )
-                }, failure: {
-                    self.hideLoading()
-                }
-            )
+                            },
+                            failure: { result in
+                            }
+                        )
+                    }, failure: {
+                        self.hideLoading()
+                    }
+                )
+            } else {
+                self.showAlert(title: "HEP", message: "Input Missing")
+            }
         } else {
-            self.showAlert(title: "HEP", message: "Input Missing")
+            self.showAlert(title: "HEP", message: "Login first")
         }
     }
         
