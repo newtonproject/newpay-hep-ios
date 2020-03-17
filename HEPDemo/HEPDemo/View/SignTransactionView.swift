@@ -63,7 +63,8 @@ class SignTransactionView: UIView {
     
     var data: String {
         get {
-            return inputDataView.content
+            let dataStr = inputDataView.content
+            return dataStr.hasPrefix("0x") ? dataStr : "0x\(dataStr)"
         }
     }
     
