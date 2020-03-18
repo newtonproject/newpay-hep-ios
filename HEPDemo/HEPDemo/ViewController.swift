@@ -104,6 +104,9 @@ class ViewController: UIViewController {
         v.btnAction = {
             self.signMessageBtnClicked()
         }
+        v.copyAction = { input in
+            self.presentCopy(input, sender: self.view)
+        }
         return v
     }()
     
@@ -113,6 +116,9 @@ class ViewController: UIViewController {
         v.backgroundColor = .white
         v.btnAction = {
             self.signTransactionBtnClicked()
+        }
+        v.copyAction = { input in
+            self.presentCopy(input, sender: self.view)
         }
         return v
     }()

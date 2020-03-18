@@ -11,6 +11,8 @@ import Foundation
 class SignTransactionView: UIView {
     
     var btnAction: (() -> Void)?
+    var copyAction: ((String) -> Void)?
+    
     var result: String = "" {
         didSet {
             DispatchQueue.main.async {
@@ -128,6 +130,10 @@ class SignTransactionView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textColor = .black
+        label.isUserInteractionEnabled = true
+        UITapGestureRecognizer(addToView: label, closure: {
+            self.copyAction?(self.result)
+        })
         return label
     }()
     

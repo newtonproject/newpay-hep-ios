@@ -39,4 +39,32 @@ extension UIViewController {
             self.present(controller, animated: true, completion: {})
         }
     }
+    
+    public func presentCopy (_ input: String, sender: UIView) {
+        self.present(makeAlertSheet(input, sender: sender), animated: true, completion: nil)
+    }
+    
+    private func makeAlertSheet(_ input: String, sender: UIView) -> UIAlertController {
+        let alertController = UIAlertController(
+            title: nil,
+            message: input,
+            preferredStyle: .actionSheet
+        )
+        let copyAction = UIAlertAction(title: NSLocalizedString("alert.button.title.copy", value: "Copy", comment: ""), style: .default) { _ in
+            UIPasteboard.general.string = input
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("alert.button.title.cancel", value: "Cancel", comment: ""), style: .cancel) { _ in
+        }
+        
+        alertController.addAction(copyAction)
+        alertController.addAction(cancelAction)
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sender
+            popoverPresentationController.sourceRect = sender.centerRect
+        }
+        
+        return alertController
+    }
 }

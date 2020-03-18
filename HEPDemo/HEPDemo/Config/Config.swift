@@ -17,7 +17,7 @@ enum RPCServer {
 
 struct Config {
     
-    let currentServer = RPCServer.devnet
+    let currentServer = RPCServer.testnet
     
     var apiBaseURL: URL {
         switch currentServer{
