@@ -8,7 +8,7 @@ iOS SDK for NewPay Integration
 
 CocoaPods is the recommended way to add NewPaySDK to your project.
 
-1. Add a pod entry for NewPaySDK to your Podfile: pod 'NewPaySDK-iOS'. The newest version is 1.1.1 .
+1. Add a pod entry for NewPaySDK to your Podfile: pod 'NewPaySDK-iOS'. The newest version is 1.1.2 .
 2. Install the pod(s) by running pod install.
 3. Include NewPaySDK wherever you need it with:
     - (Swift) import NewPaySDK_iOS 
