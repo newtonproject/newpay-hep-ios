@@ -1,4 +1,4 @@
-# NewPaySDK-iOS
+# newpay-hep-ios
 iOS SDK for NewPay Integration
 
 
